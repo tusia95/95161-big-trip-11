@@ -1,15 +1,16 @@
 
 const path = require(`path`);
+const publicDirPath = path.join(__dirname, `public`);
 module.exports = {
   mode: `development`, // режим сборки
   entry: `./src/main.js`,
   output: {
     filename: `bundle.js`,
-    path: path.join(__dirname, `public`),
+    path: publicDirPath,
   },
   devtool: `source-map`,
   devServer: {
-    contentBase: path.join(__dirname, `public`),
+    contentBase: publicDirPath,
     watchContentBase: true,
     // publicPath: `http://localhost:8080/`,
     compress: true

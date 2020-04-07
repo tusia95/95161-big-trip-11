@@ -1,14 +1,15 @@
 
 const TRIP_POINT_COUNT = 3;
 
-import {createTripInfoTemplate} from './components/trip_info';
-import {createCostTemplate} from './components/cost';
-import {сreateFiltersTemplate} from './components/filter';
+import {createTripInfoTemplate} from './components/trip-info';
+import {createTripCostTemplate} from './components/trip-cost';
+import {сreateFilterTemplate} from './components/filter';
 import {createMenuTemplate} from './components/menu';
-import {createSortingTemplate} from './components/sorting';
-import {createEventCardTemplate} from './components/event_card';
-import {createEventEditTemplate} from './components/event_edit';
-import { createDayEventsContainer} from './components/day_events_container';
+import {createSortTemplate} from './components/sort';
+import {createEventCardTemplate} from './components/event-card';
+import {createEventEditTemplate} from './components/event-edit';
+import {createDayEventsContainer} from './components/day-events-container';
+import {createNewEventButtonTemplate} from './components/new-event-button';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
@@ -17,14 +18,14 @@ const render = (container, template, place) => {
 const tripMainInfoElement = document.querySelector(`.trip-main`);
 
 render(tripMainInfoElement, createTripInfoTemplate(), `afterbegin`);
-
+render(tripMainInfoElement, createNewEventButtonTemplate(), `beforeend`);
 
 const tripControlElement = document.querySelector(`.trip-controls`);
 const tripInfoElement = document.querySelector(`.trip-info`);
 
-render(tripInfoElement, createCostTemplate(), `beforeend`);
+render(tripInfoElement, createTripCostTemplate(), `beforeend`);
 
-render(tripControlElement, сreateFiltersTemplate(), `beforeend`);
+render(tripControlElement, сreateFilterTemplate(), `beforeend`);
 
 const tripSwitcherElement = tripControlElement.querySelector(`:first-child`);
 
@@ -33,7 +34,7 @@ render(tripSwitcherElement, createMenuTemplate(), `afterend`);
 
 const tripEventsElement = document.querySelector(`.trip-events`);
 
-render(tripEventsElement, createSortingTemplate(), `beforeend`);
+render(tripEventsElement, createSortTemplate(), `beforeend`);
 render(tripEventsElement, createEventEditTemplate(), `beforeend`);
 
 const sortingElement = document.querySelector(`.event--edit`);

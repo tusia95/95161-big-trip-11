@@ -1,5 +1,7 @@
+import {formatTypeWithPreposition, formatDate} from "../utils";
+import {generateIsFavorite} from '../data';
 
-export const createEventEditTemplate = (tripPoint) => {
+export const createEventEditTemplate = (tripPoint, destinations, types) => {
   return (
     `<li class="trip-events__item">
       <form class="event  event--edit" action="#" method="post">
@@ -9,88 +11,53 @@ export const createEventEditTemplate = (tripPoint) => {
             <span class="visually-hidden">Choose event type</span>
             <img class="event__type-icon" width="17" height="17" src="img/icons/flight.png" alt="Event type icon">
           </label>
-          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" checked = ${generateIsFavorite()}>>
           <div class="event__type-list">
             <fieldset class="event__type-group">
-              <legend class="visually-hidden">${tripPoint.type}</legend>
-              <div class="event__type-item">
-                <input id="event-type-${tripPoint.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${tripPoint.type}>
-                <label class="event__type-label  event__type-label--${tripPoint.type}" for="event-type-${tripPoint.type}-1">${tripPoint.type}/label>
-              </div>
-              <div class="event__type-item">
-                <input id="event-type-${tripPoint.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${tripPoint.type}">
-                <label class="event__type-label  event__type-label--bus" for="event-type-${tripPoint.type}-1">${tripPoint.type}/label>
-              </div>
-              <div class="event__type-item">
-                <input id="event-type-${tripPoint.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${tripPoint.type}">
-                <label class="event__type-label  event__type-label--train" for="event-type-${tripPoint.type}-1">${tripPoint.type}</label>
-              </div>
-              <div class="event__type-item">
-                <input id="event-type-${tripPoint.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${tripPoint.type}>
-                <label class="event__type-label  event__type-label--ship" for="event-type-${tripPoint.type}-1">${tripPoint.type}</label>
-              </div>
-              <div class="event__type-item">
-                <input id="event-type-${tripPoint.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${tripPoint.type}>
-                <label class="event__type-label  event__type-label--${tripPoint.type}" for="event-type-transport-1">${tripPoint.type}</label>
-              </div>
-              <div class="event__type-item">
-                <input id="event-type-${tripPoint.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${tripPoint.type}>
-                <label class="event__type-label  event__type-label--${tripPoint.type}" for="event-type-drive-1"${tripPoint.type}</label>
-              </div>
-              <div class="event__type-item">
-                <input id="event-type-${tripPoint.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${tripPoint.type} checked>
-                <label class="event__type-label  event__type-label--${tripPoint.type}" for="event-type-flight-1">${tripPoint.type}</label>
-              </div>
+              <legend class="visually-hidden">Transfer</legend>
+              ${types.map((type) => `<div class="event__type-item">
+              <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${tripPoint.type}>
+              <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}/label>
+            </div>`).join(``)}
             </fieldset>
             <fieldset class="event__type-group">
-              <legend class="visually-hidden">Activity</legend>
-              <div class="event__type-item">
-                <input id="event-type-${tripPoint.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${tripPoint.type}>
-                <label class="event__type-label  event__type-label--${tripPoint.type} for="event-type-check-in-1">${tripPoint.type}</label>
-              </div>
-              <div class="event__type-item">
-                <input id="event-type-${tripPoint.type}1" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${tripPoint.type}>
-                <label class="event__type-label  event__type-label--${tripPoint.type} for="event-type-${tripPoint.type}-1">${tripPoint.type}</label>
-              </div>
-              <div class="event__type-item">
-                <input id="event-type-${tripPoint.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
-                <label class="event__type-label  event__type-label--${tripPoint.type}" for="event-type-${tripPoint.type}1">${tripPoint.type}/label>
-              </div>
+              <legend class="visually-hidden">Activity/legend>
+              ${types.map((type) =>`<div class="event__type-item">
+              <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value=${tripPoint.type}>
+              <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${type}/label>
+              </div>`).join(``)}
             </fieldset>
           </div>
         </div>
         <div class="event__field-group  event__field-group--destination">
           <label class="event__label  event__type-output" for="event-destination-1">
-          ${tripPoint.type} at
+          ${tripPoint.type} ${formatTypeWithPreposition(tripPoint.type)}
           </label>
           <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${tripPoint.cityName} list="destination-list-1">
           <datalist id="destination-list-1">
-            <option value=${tripPoint.cityName}></option>
-            <option value=${tripPoint.cityName}></option>
-            <option value=${tripPoint.cityName}></option>
+           ${destinations.map((destination) => `<option value = ${destination.name}></option>`).join(` `)}
           </datalist>
         </div>
         <div class="event__field-group  event__field-group--time">
           <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${tripPoint.tripDate.start}/${tripPoint.tripMonth}/${tripPoint.tripYear.slice(-2)} ${tripPoint.startTime}"
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${formatDate(tripPoint.tripDate.start).day}/${formatDate(tripPoint.tripDate.start).month}/${formatDate(tripPoint.tripDate.start).year} ${formatDate(tripPoint.tripDate.start).hours} :${formatDate(tripPoint.tripDate.start).minutes}}"
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${tripPoint.tripDate.start}/${tripPoint.tripMonth}/${tripPoint.tripYear.slice(-2)} ${tripPoint.endTime}">
+          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${formatDate(tripPoint.tripDate.start).day}/${formatDate(tripPoint.tripDate.start).month}/${formatDate(tripPoint.tripDate.start).year} ${formatDate(tripPoint.tripDate.end).hours} :${formatDate(tripPoint.tripDate.end).minutes}">
         </div>
         <div class="event__field-group  event__field-group--price">
           <label class="event__label" for="event-price-1">
-            <span class="visually-hidden">€${tripPoint.price}/span>
-            &euro;
+          &euro;&nbsp;<span class="visually-hidden">${tripPoint.price}/span>
           </label>
           <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value=${tripPoint.price}>
         </div>
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
-        <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
+        <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked = ${generateIsFavorite()}>
         <label class="event__favorite-btn" for="event-favorite-1">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -105,22 +72,22 @@ export const createEventEditTemplate = (tripPoint) => {
         <section class="event__section  event__section--offers">
           <h3 class="event__section-title  event__section-title--offers">Offers</h3>
           <div class="event__available-offers">
-          ${tripPoint.options.map((it) =>`<div class="event__offer-selector">
-            <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
-            <label class="event__offer-label" for="event-offer-luggage-1">
-              <span class="event__offer-title">${it.name}</span>
+          ${tripPoint.offers.map((offer) =>`<div class="event__offer-selector">
+            <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offer.name}-${offer.price}" type="checkbox" name="event-offer-${offer.name}" checked>
+            <label class="event__offer-label" for="event-offer-${offer.name}-${offer.price}">
+              <span class="event__offer-title">${offer.name}</span>
               &plus;
-              &euro;&nbsp;<span class="event__offer-price">${it.price}</span>
+              &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
             </label>
           </div>`).join(` `)}
           </div>
         </section>
         <section class="event__section  event__section--destination">
           <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${tripPoint.destinationInfo.description}</p>
+          <p class="event__destination-description">${tripPoint.destination.description}</p>
           <div class="event__photos-container">
             <div class="event__photos-tape">
-            ${tripPoint.destinationInfo.photo.map((it) =>`<img class="event__photo" src= ${it} alt="Event photo">`).join(` `)}
+            ${tripPoint.destination.photos.map((photo) =>`<img class="event__photo" src= ${photo} alt="Event photo">`).join(` `)}
             </div>
           </div>
         </section>

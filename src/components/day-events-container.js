@@ -1,10 +1,13 @@
-import {MONTHS_NAMES} from '../data';
+import {MONTHS_NAMES} from '../utils';
+import {formatDate} from '../utils';
 export const createDayEventsContainer = (tripPoint, counter) => {
   return (
-    `<div class="day__info">
+    `<li class="trip-days__item day">  
+     <div class="day__info">
         <span class="day__counter">${counter}</span>
-        <time class="day__date" datetime="${tripPoint.tripYear}-${tripPoint.tripMonth}-${tripPoint.tripDate.start}">${MONTHS_NAMES[tripPoint.tripMonth]} ${tripPoint.tripDate.start}</time>
-    </div>
-    <ul class="trip-events__list"></ul>`
+        <time class="day__date" datetime="${formatDate(tripPoint.tripDate.start).year}-${formatDate(tripPoint.tripDate.start).month}-${formatDate(tripPoint.tripDate.start).day}">${MONTHS_NAMES[formatDate(tripPoint.tripDate.start).month]} ${formatDate(tripPoint.tripDate.start).day}</time>
+     </div>
+      <ul class="trip-events__list"></ul>
+    </li>`
   );
 };

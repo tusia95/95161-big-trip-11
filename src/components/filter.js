@@ -1,8 +1,8 @@
 
-const filters = [{name: `Everything`, isChecked: `checked`}, {name: `Future`, isChecked: `null`}, {name: `Past`, isChecked: `null`}];
-export const сreateFilterTemplate = () => {
-  return (
-    `<h2 class="visually-hidden">Filter events</h2>
+import {createElement} from '../utils';
+
+const сreateFilterTemplate = (filters) => {
+  return (`
       <form class="trip-filters" action="#" method="get">
       ${filters.map((filter) =>
       `<div class="trip-filters__filter">
@@ -13,3 +13,28 @@ export const сreateFilterTemplate = () => {
       </form>`
   );
 };
+
+export default class Filter {
+  constructor(filters) {
+    this._filters = filters;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return сreateFilterTemplate(this._filters);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

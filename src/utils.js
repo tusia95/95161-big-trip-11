@@ -2,6 +2,20 @@ import {TRANSFER_EVENTS, ACTIVITY_EVENTS} from './data';
 
 export const MONTHS_NAMES = [`Jan`, `Feb`, `Mar`, `Apr`, `May`, `Jun`, `Jul`, `Aug`, `Sep`, `Oct`, `Nov`, `Dec`];
 
+export const RenderPosition = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
+export const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};
+
+export const filters = [{name: `Everything`, isChecked: `checked`}, {name: `Future`, isChecked: `null`}, {name: `Past`, isChecked: `null`}];
+export const sortings = [`event`, `time`, `price`];
+
 export const getTotalSum = (tripPoints)=> {
   const pointsSum = tripPoints.reduce((sum, current) => {
     return sum + current.price;
@@ -39,7 +53,6 @@ export const formatTypeWithPreposition = (type) => {
 
 export const formatDate = (date) => {
   const year = date.getFullYear();
-  console.log(`this is ${year}`);
   const day = date.getDate();
   const month = date.getMonth();
   const hours = date.getHours();
@@ -64,4 +77,15 @@ export const getTripTitle = (tripPoints) => {
 
 export const getTripDates = (tripPoints) => {
   return `${MONTHS_NAMES[formatDate(tripPoints[0].tripDate.start).month]} ${formatDate(tripPoints[0].tripDate.start).day}&nbsp;&mdash;&nbsp${formatDate(tripPoints[tripPoints.length - 1].tripDate.end).day}`;
+};
+
+export const render = (container, element, place) => {
+  switch (place) {
+    case RenderPosition.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case RenderPosition.BEFOREEND:
+      container.append(element);
+      break;
+  }
 };

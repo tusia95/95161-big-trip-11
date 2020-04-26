@@ -1,5 +1,5 @@
-import {formatDate} from '../utils';
-export const createEventCardTemplate = (tripPoint) => {
+import {createElement, formatDate} from '../utils';
+const createEventCardTemplate = (tripPoint) => {
   return (
     `<li class="trip-events__item">
       <div class="event">
@@ -34,5 +34,29 @@ export const createEventCardTemplate = (tripPoint) => {
   </li>`
   );
 };
+
+export default class EventCard {
+  constructor(tripPoint) {
+    this._eventCard = tripPoint;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventCardTemplate(this._eventCard);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
 
 

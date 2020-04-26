@@ -1,7 +1,7 @@
-import {formatTypeWithPreposition, formatDate} from "../utils";
+import {formatTypeWithPreposition, createElement, formatDate} from "../utils";
 import {generateIsFavorite} from '../data';
 
-export const createEventEditTemplate = (tripPoint, destinations, types) => {
+const createEventEditTemplate = (tripPoint, destinations, types) => {
   return (
     `<li class="trip-events__item">
       <form class="event  event--edit" action="#" method="post">
@@ -96,3 +96,29 @@ export const createEventEditTemplate = (tripPoint, destinations, types) => {
   </li>`
   );
 };
+
+export default class EventEdit {
+  constructor(tripPoint, destinations, types) {
+    this._eventCard = tripPoint;
+    this._destinations = destinations;
+    this._types = types;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEventEditTemplate(this._eventCard, this._destinations, this._types);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

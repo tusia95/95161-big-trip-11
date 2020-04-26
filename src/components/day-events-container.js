@@ -1,6 +1,6 @@
 import {MONTHS_NAMES} from '../utils';
-import {formatDate} from '../utils';
-export const createDayEventsContainer = (tripPoint, counter) => {
+import {formatDate, createElement} from '../utils';
+const createDayEventsContainerTemplate = (tripPoint, counter) => {
   return (
     `<li class="trip-days__item day">  
      <div class="day__info">
@@ -11,3 +11,28 @@ export const createDayEventsContainer = (tripPoint, counter) => {
     </li>`
   );
 };
+
+export default class DayEventsContainer {
+  constructor(tripPoint, counter) {
+    this._tripPont = tripPoint;
+    this._counter = counter;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createDayEventsContainerTemplate(this._tripPont, this._counter);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+

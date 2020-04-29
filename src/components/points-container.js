@@ -5,7 +5,7 @@ const createPointsContainerTemplate = () => {
   );
 };
 
-export default class PointsContainer {
+export default class TripDays {
   constructor() {
     this._element = null;
   }

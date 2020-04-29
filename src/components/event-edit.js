@@ -42,10 +42,10 @@ const createEventEditTemplate = (tripPoint, destinations, types) => {
           <label class="visually-hidden" for="event-start-time-1">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${formatDate(tripPoint.tripDate.start).day}/${formatDate(tripPoint.tripDate.start).month}/${formatDate(tripPoint.tripDate.start).year} ${formatDate(tripPoint.tripDate.start).hours} :${formatDate(tripPoint.tripDate.start).minutes}}"
+          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${formatDate(tripPoint.tripDate.start).day}/${formatDate(tripPoint.tripDate.start).month}/${formatDate(tripPoint.tripDate.start).year} ${formatDate(tripPoint.tripDate.start).hours} :${formatDate(tripPoint.tripDate.start).minutes}"
           &mdash;
           <label class="visually-hidden" for="event-end-time-1">
-            To
+            — 
           </label>
           <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${formatDate(tripPoint.tripDate.start).day}/${formatDate(tripPoint.tripDate.start).month}/${formatDate(tripPoint.tripDate.start).year} ${formatDate(tripPoint.tripDate.end).hours} :${formatDate(tripPoint.tripDate.end).minutes}">
         </div>
@@ -97,7 +97,7 @@ const createEventEditTemplate = (tripPoint, destinations, types) => {
   );
 };
 
-export default class EventEdit {
+export default class PointEdit {
   constructor(tripPoint, destinations, types) {
     this._eventCard = tripPoint;
     this._destinations = destinations;

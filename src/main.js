@@ -3,17 +3,23 @@ import TripCostComponent from './components/trip-cost';
 import FilterComponent from './components/filter';
 import MenuComponent from './components/menu';
 import SortComponent from './components/sort';
-import EventCardComponent from './components/event-card';
-import EventEditComponent from './components/event-edit';
-import DayEventsContainerComponent  from './components/day-events-container';
+import PointCardComponent from './components/event-card';
+import PointEditComponent from './components/event-edit';
+import TripDayComponent from './components/day-events-container';
 import NewEventButtonComponent from './components/new-event-button';
-import PointsContainerComponent from './components/points-container';
-import {generateMockData, MOCK_DATA_NUM, generateDestinations, generateTypes} from './data';
-import {formatDate, sortings, filters, render, RenderPosition} from './utils';
+import TripDaysComponent from './components/points-container';
+import {generateMockData, generateDestinations, generateTypes} from './data';
+import {formatDate, render, RenderPosition} from './utils';
 
+const SORTINGS = [`day`, `event`, `time`, `price`, `offers`];
 
-const pointDatas = generateMockData();
-const eventCards = pointDatas.slice(1, MOCK_DATA_NUM);
+const FILTERS = [
+  {name: `Everything`, isChecked: true},
+  {name: `Future`},
+  {name: `Past`},
+];
+
+const points = generateMockData();
 
 const destinations = generateDestinations();
 const types = generateTypes();
@@ -21,72 +27,73 @@ const types = generateTypes();
 
 const tripMainInfoElement = document.querySelector(`.trip-main`);
 
-render(tripMainInfoElement, new TripInfoComponent(eventCards).getElement(), RenderPosition.AFTERBEGIN);
-render(tripMainInfoElement, new NewEventButtonComponent().getElement(), RenderPosition.BEFOREEND);// почему не отображается?
+render(tripMainInfoElement, new TripInfoComponent(points).getElement(), RenderPosition.AFTERBEGIN);
+render(tripMainInfoElement, new NewEventButtonComponent().getElement());
 
 const tripControlElement = document.querySelector(`.trip-controls`);
 const tripInfoElement = document.querySelector(`.trip-info`);
 
-render(tripInfoElement, new TripCostComponent(eventCards).getElement(), RenderPosition.BEFOREEND);
+render(tripInfoElement, new TripCostComponent(points).getElement());
 
 const tripSwitcherElement = tripControlElement.querySelector(`h2:first-child`);
-render(tripSwitcherElement, new MenuComponent().getElement(), RenderPosition.BEFOREEND); // afterend
+render(tripSwitcherElement, new MenuComponent().getElement(), RenderPosition.AFTERBEGIN); // afterend
 
-render(tripControlElement, new FilterComponent(filters).getElement(), RenderPosition.BEFOREEND);
+render(tripControlElement, new FilterComponent(FILTERS).getElement());
 
 
 const tripEventsElement = document.querySelector(`.trip-events`);
 
-render(tripEventsElement, new SortComponent(sortings).getElement(), RenderPosition.BEFOREEND);
+render(tripEventsElement, new SortComponent(SORTINGS).getElement());
 
 // render(tripEventsElement, new EventEditComponent(pointDatas[0], destinations, types).getElement(), RenderPosition.BEFOREEND);
 
 // render container for all trip days
-render(tripEventsElement, new PointsContainerComponent().getElement(), RenderPosition.BEFOREEND);
+render(tripEventsElement, new TripDaysComponent().getElement());
 
-const sortCards = eventCards.sort((a, b) => {
+const sortCards = points.sort((a, b) => {
   return formatDate(a.tripDate.start).month - formatDate(b.tripDate.start).month;
 });
 
 // all days container element
-const daysContainerElement = document.querySelector(`.trip-days`);
+const tripDaysElement = document.querySelector(`.trip-days`);
 let startPointDate = sortCards[0].tripDate.start;
 let counter = 1;
 
 // arrow down for trip point
 
 
-const renderEvent = (dayEventsContainerElement, eventCard) => {
-  const onRollUpBtnClick = () => {
-    dayEventsContainerElement.replaceChild(eventEditComponent.getElement(), eventCardComponent.getElement());
+const renderPoint = (tripDay, pointCard) => {
+  const onRollUpButtonClick = () => {
+    tripDay.replaceChild(pointEditComponent.getElement(), pointCardComponent.getElement());
   };
-  
+
   const onEditFormSubmit = (evt) => {
     evt.preventDefault();
-    dayEventsContainerElement.replaceChild(eventCardComponent.getElement(), eventEditComponent.getElement());
+    tripDay.replaceChild(pointCardComponent.getElement(), pointEditComponent.getElement());
   };
 
 
-  const eventCardComponent = new EventCardComponent(eventCard);
-  const eventEditComponent = new EventEditComponent(eventCard, destinations, types);
-  const rollUpBtn = eventCardComponent.getElement().querySelector(`.event__rollup-btn`);
-  const eventSubmitBtn = eventEditComponent.getElement().querySelector(`.event--edit`);
-  rollUpBtn.addEventListener(`click`, onRollUpBtnClick);
-  eventSubmitBtn.addEventListener(`submit`, onEditFormSubmit);
+  const pointCardComponent = new PointCardComponent(pointCard);
+  const pointEditComponent = new PointEditComponent(pointCard, destinations, types);
+  const rollUpButtonElement = pointCardComponent.getElement().querySelector(`.event__rollup-btn`);
+  const eventSubmitButtonElement = pointEditComponent.getElement().querySelector(`.event--edit`);
+  rollUpButtonElement.addEventListener(`click`, onRollUpButtonClick);
+  eventSubmitButtonElement.addEventListener(`submit`, onEditFormSubmit);
 
-  render(dayEventsContainerElement, eventCardComponent.getElement(), RenderPosition.BEFOREEND);
+  render(tripDayElement, pointCardComponent.getElement());
 };
 
-render(daysContainerElement, new DayEventsContainerComponent(sortCards[0], counter++).getElement(), RenderPosition.BEFOREEND);
-let dayEventsContainerElement = daysContainerElement.querySelector(`li:last-child`);
+render(tripDaysElement, new TripDayComponent(sortCards[0], counter++).getElement());
+let tripDayElement = tripDaysElement.querySelector(`li:last-child`);
 for (let i = 0; i < sortCards.length; i++) {
   const currentCard = sortCards[i];
   if (currentCard.tripDate.start === startPointDate) {
-    renderEvent(dayEventsContainerElement, currentCard);
+    renderPoint(tripDayElement, currentCard);
   } else {
     startPointDate = currentCard.tripDate.start;
-    render(daysContainerElement, new DayEventsContainerComponent(currentCard, counter++).getElement(), RenderPosition.BEFOREEND);
-    dayEventsContainerElement = daysContainerElement.querySelector(`li:last-child`);
-    renderEvent(dayEventsContainerElement, currentCard);
+    render(tripDaysElement, new TripDayComponent(currentCard, counter++).getElement());
+    tripDayElement = tripDaysElement.querySelector(`li:last-child`);
+    renderPoint(tripDayElement, currentCard);
   }
-};
+}
+

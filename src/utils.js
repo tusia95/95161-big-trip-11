@@ -13,31 +13,6 @@ export const createElement = (template) => {
   return newElement.firstChild;
 };
 
-export const filters = [{name: `Everything`, isChecked: `checked`}, {name: `Future`, isChecked: `null`}, {name: `Past`, isChecked: `null`}];
-export const sortings = [`event`, `time`, `price`];
-
-export const getTotalSum = (tripPoints)=> {
-  const pointsSum = tripPoints.reduce((sum, current) => {
-    return sum + current.price;
-  }, 0);
-
-  // ".event__offer-checkbox:checked"
-  const pointOptionsSum = tripPoints.map((tripPoint) => {
-    if (tripPoint.offers) {
-      tripPoint.offers.reduce((sum, current) => {
-        return sum + current.price;
-      }, 0);
-    }
-  });
-
-
-  const totalOptionsSum = pointOptionsSum.reduce((sum, current) => {
-    return sum + current;
-  }, 0);
-
-  return pointsSum + totalOptionsSum;
-};
-
 
 export const formatTypeWithPreposition = (type) => {
   switch (true) {
@@ -79,7 +54,7 @@ export const getTripDates = (tripPoints) => {
   return `${MONTHS_NAMES[formatDate(tripPoints[0].tripDate.start).month]} ${formatDate(tripPoints[0].tripDate.start).day}&nbsp;&mdash;&nbsp${formatDate(tripPoints[tripPoints.length - 1].tripDate.end).day}`;
 };
 
-export const render = (container, element, place) => {
+export const render = (container, element, place = RenderPosition.BEFOREEND) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(element);

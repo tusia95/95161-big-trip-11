@@ -35,7 +35,7 @@ const createEventCardTemplate = (tripPoint) => {
   );
 };
 
-export default class EventCard {
+export default class PointCard {
   constructor(tripPoint) {
     this._eventCard = tripPoint;
 

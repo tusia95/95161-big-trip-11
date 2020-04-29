@@ -1,8 +1,10 @@
-import {getTotalSum, createElement} from '../utils';
+import {createElement} from '../utils';
+import {getTotalPrice} from '../calculation';
+
 const createTripCostTemplate = (tripPoints) => {
   return (
     `<p class="trip-info__cost">
-      Total: &euro;&nbsp;<span class="trip-info__cost-value">${getTotalSum(tripPoints)}</span>
+      Total: &euro;&nbsp;<span class="trip-info__cost-value">${getTotalPrice(tripPoints)}</span>
     </p>`
   );
 };
